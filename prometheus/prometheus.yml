@@ -1,0 +1,11 @@
+global:
+  scrape_interval: 15s  # Set the default scrape interval for all targets
+
+scrape_configs:
+  - job_name: 'mongo'  # Job name for MongoDB
+    static_configs:
+      - targets: ['mongodb:27017']  # Target for MongoDB
+
+  - job_name: 'redis'  # Job name for Redis
+    static_configs:
+      - targets: ['redis:6379']  # Target for Redis

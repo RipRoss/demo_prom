@@ -1,0 +1,52 @@
+version: "3.8"  # Define the Docker Compose file version
+
+services:
+  mongodb:
+    image: mongo:latest   # Use the latest MongoDB image
+    container_name: mongodb  # Optional: Give your container a name
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin  # Set MongoDB root username
+      - MONGO_INITDB_ROOT_PASSWORD=admin  # Set MongoDB root password
+    ports:
+      - "27017:27017"  # Expose MongoDB on localhost:27017
+    volumes:
+      - mongo_data:/data/db  # Persist MongoDB data using a Docker volume
+
+  redis:
+    image: redis:latest  # Use the latest Redis image
+    container_name: redis  # Optional: Give your container a name
+    ports:
+      - "6379:6379"  # Expose Redis on localhost:6379
+    volumes:
+      - redis_data:/data  # Persist Redis data using a Docker volume
+
+  prometheus:
+    image: prom/prometheus:latest  # Use the latest Prometheus image
+    container_name: prometheus  # Optional: Give your container a name
+    ports:
+      - "9090:9090"  # Expose Prometheus on localhost:9090
+    user: root  # Run Prometheus as root
+    volumes:
+      - ./prometheus:/prometheus  # Mount data directory
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml  # Mount Prometheus config file
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'  # Specify config file location
+      - '--storage.tsdb.retention.time=90d'
+
+  grafana:
+    image: grafana/grafana:latest  # Use the latest Grafana image
+    container_name: grafana  # Optional: Give your container a name
+    ports:
+      - "3000:3000"  # Expose Grafana on localhost:3000
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin  # Set admin password for Grafana
+    volumes:
+      - grafana_data:/var/lib/grafana  # Persist Grafana data using a Docker volume
+
+volumes:
+  mongo_data:
+    driver: local  # Define a Docker volume to persist MongoDB data
+  redis_data:
+    driver: local  # Define a Docker volume to persist Redis data
+  grafana_data:
+    driver: local  # Define a Docker volume to persist Grafana data

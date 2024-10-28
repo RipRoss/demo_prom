@@ -1,0 +1,4 @@
+This project is designed to simply act as a POC example of how i think the current Hangfire exporter should work, as opposed to how it has worked in the past.
+
+
+# This is much more complex than what we need in reality as this was to back populate Prometheus with metrics, and creating all of that myself. In production and in reality, the metrics will just be generated live by Swimlane and Prometheus working away. I just didn't have the time to wait. SUM and COUNT for example with histograms, in reality we get them for free. the logic for back populating them is more complex than using them going forward
